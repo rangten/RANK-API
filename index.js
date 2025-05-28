@@ -1,43 +1,43 @@
-const express = require('express');
-const cors = require('cors');
+
+const express = require("express");
+const cors = require("cors");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/ranking', (req, res) => {
-  const { produto } = req.query;
-  if (!produto) {
-    return res.status(400).json({ erro: 'Parâmetro "produto" é obrigatório.' });
-  }
+app.get("/", (req, res) => {
+  res.send("🚀 RankML API está no ar!");
+});
 
-  // Mock de resposta de 50 anúncios
-  const resultado = Array.from({ length: 50 }, (_, i) => ({
-    posicao: i + 1,
-    titulo: `${produto} Modelo ${i + 1}`,
-    preco: `R$ ${(Math.random() * 100 + 20).toFixed(2)}`,
+app.post("/ranking", async (req, res) => {
+  const { termo } = req.body;
+  // Simulando retorno de API com base no termo de busca
+  const mockResults = Array.from({ length: 5 }, (_, i) => ({
+    titulo: `${termo} ${i + 1}`,
+    preco: `R$ ${(Math.random() * 100 + 50).toFixed(2)}`,
     vendas: Math.floor(Math.random() * 1000),
-    tipo: i % 2 === 0 ? 'Clássico' : 'Premium',
-    entrega: i % 3 === 0 ? 'Full' : 'Normal',
-    catalogo: i % 4 === 0 ? 'Sim' : 'Não',
-    data: new Date(Date.now() - i * 86400000).toLocaleDateString('pt-BR')
+    tipo: "Clássico",
+    entrega: "Full",
+    catalogo: "Sim",
+    data: new Date().toLocaleDateString("pt-BR")
   }));
-
-  res.json({ resultados: resultado });
+  res.json(mockResults);
 });
 
-app.get('/api/posicao', (req, res) => {
-  const { produto, url } = req.query;
-  if (!produto || !url) {
-    return res.status(400).json({ erro: 'Parâmetros "produto" e "url" são obrigatórios.' });
-  }
-
-  // Mock de posição
-  const posicao = Math.floor(Math.random() * 200) + 1;
-  res.json({ produto, url, posicao });
+app.post("/posicao", async (req, res) => {
+  const { termo, titulo } = req.body;
+  const lista = Array.from({ length: 50 }, (_, i) => ({
+    titulo: `${termo} ${i + 1}`,
+  }));
+  const posicao = lista.findIndex(item => item.titulo === titulo);
+  res.json({
+    posicao: posicao >= 0 ? posicao + 1 : null,
+    total: lista.length
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
