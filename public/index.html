@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tendências do Mercado Livre</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <span>📊</span> Tendências do Mercado Livre
+    </h1>
+    <div class="flex gap-2 mb-4">
+      <input id="search-input" type="text" placeholder="Ex: Caneca, Camiseta..." class="w-full p-2 border border-gray-300 rounded">
+      <button onclick="buscarDados()" class="bg-blue-600 text-white px-4 rounded">Buscar</button>
+    </div>
+    <div id="erro" class="text-red-600 mb-4 hidden">Erro ao buscar dados.</div>
+    <div id="resultados" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
